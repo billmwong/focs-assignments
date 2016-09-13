@@ -77,14 +77,14 @@
 (define (calculate x)
   (if (number? x)
     x
-    ((evaluate (first x) operator-list) (second x) (third x))
+    ((evaluate (first x) operator-list) (calculate (second x)) (calculate (third x)))
   )
 )
 
 (display "Evaluate:\n")
-(evaluate 'ADD operator-list) ;--> '(ADD #<procedure:+>)
-(evaluate 'GT operator-list) ;--> '(ANND #<procedure>)
+(evaluate 'ADD operator-list) ;--> #<procedure:+>
+(evaluate 'MUL operator-list) ;--> #<procedure:*>
 (evaluate 'FOO operator-list) ;--> #f
 
-(calculate '(ADD 5 4)) ; -> 7
+(calculate '(ADD 5 4)) ; -> 9
 (calculate '(MUL 5 4)) ; -> 20
