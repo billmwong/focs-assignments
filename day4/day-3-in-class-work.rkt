@@ -28,8 +28,8 @@
   )
 )
 
-(display (fact-tail 3)) (newline) ;; -> 10
-(display (filter even? '(1 2 3 4 5 6))) (newline) ;; -> 10
+(display (fact-tail 3)) (newline)
+(display (filter even? '(1 2 3 4 5 6))) (newline)
 
 ;;;;;;;;;;;
 ;; 1.  Filter is built in to scheme.
@@ -87,7 +87,7 @@
   )
 )
 
-(display (my-map double '(1 2 3 4 5 6))) (newline) ;; -> 10
+(display (my-map double '(1 2 3 4 5 6))) (newline)
 
 ;;;;;;;;;;;
 ;; 3.  While we're reimplementing built-ins, implement my-append (just like built in append)
@@ -100,8 +100,17 @@
 ;; as well as for the new list.  Confirm with a member of the instructional staff....
 
 
+(define (my-append l1 l2)
+  (if (empty? l1)
+    (if (empty? l2)
+      '()
+      (cons (first l2) (my-append l1 (rest l2)))
+    )
+    (cons (first l1) (my-append (rest l1) l2))
+  )
+)
 
-
+(my-append '(1 2 3) '(4 5 6)) ; --> '(1 2 3 4 5 6)
 
 ;;;;;;;;;;;
 ;; 4.  zip takes two lists, and returns a list of elements of size two, until one of the lists runs out.
@@ -111,8 +120,15 @@
 
 ;; Implement `zip`.
 
+(define (my-zip l1 l2)
+  (if (or (empty? l1) (empty? l2))
+    '()
+    (cons (list (first l1) (first l2)) (my-zip (rest l1) (rest l2)))
+  )
+)
 
-
+(my-zip '(1 2 3) '(4 5 6)) ;; --> '((1 4) (2 5) (3 6))
+(my-zip '(1 2 3) '(a b c d e f g)) ;; --> '((1 a) (2 b) (3 c))
 
 ;;;;;;;;;;;;
 ;; 5.  Last built-in (for now):  (my-)reverse.
@@ -120,7 +136,14 @@
 
 ;; (reverse '(1 2 3)) --> '(3 2 1)
 
+(define (my-reverse lst)
+  (if (empty? lst)
+    lst
+    (my-append (my-reverse (rest lst)) (list (first lst)))
+  )
+)
 
+(my-reverse '(1 2 3)) ;--> '(3 2 1)
 
 ;;;;;;;;;;;;
 ;; More puzzles:
